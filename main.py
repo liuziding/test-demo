@@ -16,8 +16,9 @@ class Window(QMainWindow):
         self.detailPage = DetailPage()
 
         # 把页面添加到stacked窗口里面
-        self.stacked_widget.addWidget(self.homePage)
         self.stacked_widget.addWidget(self.detailPage)
+        self.stacked_widget.addWidget(self.homePage)
+        
 
         # 从主页跳转详情页
         self.homePage.home_signal.connect(self.switch_page)
@@ -41,4 +42,4 @@ if __name__ == '__main__':
     window = Window()
     window.setWindowTitle("主窗口")
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

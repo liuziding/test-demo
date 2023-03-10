@@ -90,11 +90,11 @@ class ContentDetailWidget(QWidget):
     def setupUi(self):
         """建立主程序界面"""
         # 创立主窗口中心部件
-        centre_widget = QWidget()
+        centre_widget = QWidget(self)
 
         # 创建左、中、右三个部件
         self.left_widget = QListWidget()
-        middle_widget = QTableWidget()
+        self.middle_widget = QTableWidget()
         self.right_widget = QTableWidget()
 
         # 设置左部件列表
@@ -110,13 +110,13 @@ class ContentDetailWidget(QWidget):
         self.left_widget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 
         # 设置中部件图片
-        self.center_label = QLabel(middle_widget)
-        self.center_label.setFixedSize(605, 736)
-        self.center_label.setAlignment(Qt.AlignCenter)
-        self.center_label.setStyleSheet("background-color: black;")
-        center_pixmap = QPixmap("./images/inside.jpg").scaled(self.center_label.size(), aspectMode=Qt.KeepAspectRatio)
-        self.center_label.setPixmap(center_pixmap)
-        self.center_label.repaint()
+        self.middle_label = QLabel(self.middle_widget)
+        self.middle_label.setFixedSize(605, 736)
+        self.middle_label.setAlignment(Qt.AlignCenter)
+        self.middle_label.setStyleSheet("background-color: black;")
+        center_pixmap = QPixmap("./images/inside.jpg").scaled(self.middle_label.size(), aspectMode=Qt.KeepAspectRatio)
+        self.middle_label.setPixmap(center_pixmap)
+        self.middle_label.repaint()
 
         # 设置右边图片
         self.right_label = QLabel(self.right_widget)
@@ -137,21 +137,18 @@ class ContentDetailWidget(QWidget):
         # 创建主布局，并将左、中、右三个布局加入到主布局中
         main_layout = QHBoxLayout()
         main_layout.addLayout(left_layout)
-        main_layout.addWidget(self.center_label)
+        main_layout.addWidget(self.middle_label)
         main_layout.addWidget(self.right_label)
 
         # 将主布局设置为中心部件的布局
         centre_widget.setLayout(main_layout)
 
-        # 将中心部件设置为主窗口的中心部件
-        # self.setCentralWidget(centre_widget)
-
         # 点击列表item，颜色改变
-        # self.left_widget.itemClicked.connect(self.handle_item_clicked)
+        self.left_widget.itemClicked.connect(self.handle_item_clicked)
 
         # 将显示菜单栏的函数绑定到 QListWidget 的 customContextMenuRequested 信号
-        # self.left_widget.setContextMenuPolicy(Qt.CustomContextMenu)
-        # self.left_widget.customContextMenuRequested.connect(self.show_menu_clicked)
+        self.left_widget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.left_widget.customContextMenuRequested.connect(self.show_menu_clicked)
 
     def handle_item_clicked(self, item):
         # 获取项目所在的列
@@ -170,8 +167,8 @@ class ContentDetailWidget(QWidget):
             imagePath = "{}{}{}".format("./images/", column, ".jpg")
             self.right_label.setPixmap(QPixmap(imagePath).scaled(self.right_label.size(), aspectMode=Qt.KeepAspectRatio))
             self.right_label.repaint()
-            self.center_label.setPixmap(QPixmap(imagePath).scaled(self.center_label.size(), aspectMode=Qt.KeepAspectRatio))
-            self.center_label.repaint()
+            self.middle_label.setPixmap(QPixmap(imagePath).scaled(self.middle_label.size(), aspectMode=Qt.KeepAspectRatio))
+            self.middle_label.repaint()
 
     def show_menu_clicked(self, pos): # 右击列表，弹出菜单删除某行
         # 当在一个项上右击时显示菜单栏
@@ -181,13 +178,17 @@ class ContentDetailWidget(QWidget):
             delete_action = QAction("删除", self.left_widget)
             delete_action.triggered.connect(lambda: self.left_widget.takeItem(self.left_widget.row(item)))
             menu.addAction(delete_action)
-            menu.exec_(self.left_widget.mapToGlobal(pos))
+            menu.exec(self.left_widget.mapToGlobal(pos))
 
 
 class DetailPage(QMainWindow):
     detail_signal = Signal(str)
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("主窗口")
+        self.resize(1300, 800)
+        self.setMinimumWidth(1300)
+        self.setMinimumHeight(800)
         
         # 中心控件
         self.detail_widget = QWidget()
@@ -195,7 +196,7 @@ class DetailPage(QMainWindow):
         self.top_detail_widget = TopDetailWidget()
         # 窗口下部分内容
         self.content_detail_widget = ContentDetailWidget()
-        self.detail_widget.setStyleSheet("background: pink;")
+        # self.detail_widget.setStyleSheet("background: pink;")
         # self.content_detail_widget.inner_detail_signal.connect(self.switch_detail_page)
 
         self.setup_ui()

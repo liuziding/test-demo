@@ -194,8 +194,8 @@ class HomePage(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("主窗口")
-        self.resize(1300, 800)
-        self.setMinimumWidth(1300)
+        self.resize(1500, 800)
+        self.setMinimumWidth(1500)
         self.setMinimumHeight(800)
 
         # 中心控件
@@ -204,7 +204,6 @@ class HomePage(QMainWindow):
         self.top_home_widget = TopHomeWidget()
         # 窗口下部分内容
         self.content_home_widget = ContentHomeWidget()
-        self.home_widget.setStyleSheet("background: pink;")
         self.content_home_widget.inner_home_signal.connect(self.switch_detail_page)
 
         self.setup_ui()
