@@ -1,0 +1,7 @@
+.DS_Store
+ui/__pycache__
+__pycache__
+
+# Editor directories and files
+.vscode
+.idea
