@@ -151,7 +151,7 @@ class ContentHomeWidget(QWidget):
 
             set_lines_button.clicked.connect(lambda: self.setLine_clicked(i))
             set_area_button.clicked.connect(lambda: self.setArea_clicked(i))
-            detail_button.clicked.connect(lambda: self.switch_detail_page(i))
+            detail_button.clicked.connect(lambda: self.content_signal(i))
 
             label.setLayout(v_video_layout)
 
@@ -184,7 +184,7 @@ class ContentHomeWidget(QWidget):
     def resizeEvent(self, evt):
         self.windowChange()
 
-    def switch_detail_page(self):
+    def content_signal(self, param):
         self.inner_home_signal.emit("homePage")
 
     
@@ -205,7 +205,7 @@ class HomePage(QMainWindow):
         # 窗口下部分内容
         self.content_home_widget = ContentHomeWidget()
         self.home_widget.setStyleSheet("background: pink;")
-        self.content_home_widget
+        self.content_home_widget.inner_home_signal.connect(self.switch_detail_page)
 
         self.setup_ui()
 
@@ -227,6 +227,9 @@ class HomePage(QMainWindow):
 
         # 设置中心控件
         self.setCentralWidget(self.home_widget)
+
+    def switch_detail_page(self):
+        self.home_signal.emit("homePage")
 
 
 
@@ -254,3 +257,4 @@ class HomePage(QMainWindow):
 
     # def switch_detail_page(self):
     #     self.home_signal.emit("homePage")
+

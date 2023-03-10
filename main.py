@@ -27,9 +27,11 @@ class Window(QMainWindow):
     def switch_page(self, currentWidget):
         if currentWidget == "homePage":
             # 跳转详情页
+            self.setWindowTitle("详情窗口")
             self.stacked_widget.setCurrentWidget(self.detailPage)
         else:
             # 跳转主页
+            self.setWindowTitle("主窗口")
             self.stacked_widget.setCurrentWidget(self.homePage)
 
 
@@ -37,5 +39,6 @@ class Window(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
+    window.setWindowTitle("主窗口")
     window.show()
     sys.exit(app.exec_())

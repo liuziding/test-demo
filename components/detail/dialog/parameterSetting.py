@@ -7,9 +7,9 @@ from PySide6.QtCore import QFile
 
 from utils.commonhelper import CommonHelper
 
-class ParameterSettingDialog(QDialog):
+class ParameterSetting(QDialog):
     def __init__(self, parent = None):
-        super(ParameterSettingDialog, self).__init__(parent)
+        super(ParameterSetting, self).__init__(parent)
         self.setFixedSize(600, 400)
         self.setWindowTitle("参数配置")
         # 设置样式
