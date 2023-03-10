@@ -5,6 +5,8 @@ from PySide6.QtCore import *
 from ..line.subLineView import SubLineView
 from ..line.subAreaView import SubAreaView
 
+from components.detail.detailDialog import DetailDialog  # ..detailDialog detail.detailDialog import DetailDialog
+
 # 内容部分
 class ContentWidget(QWidget):
     def __init__(self, window):
@@ -68,8 +70,8 @@ class ContentWidget(QWidget):
             pixmap = QPixmap("./images/inside.jpg")
             pixmap_w = pixmap.width()
             pixmap_h = pixmap.height()
-            image_w = (self.width() - 36) / 2
-            image_h = (self.height() - 40) / 2
+            image_w = image_label.width()
+            image_h = image_label.height()
             ratio_w = pixmap_w / image_w
             ratio_h = pixmap_h / image_h
             new_pixmap = None
@@ -90,6 +92,7 @@ class ContentWidget(QWidget):
 
             set_lines_button.clicked.connect(lambda: self.setLine_clicked(i))
             set_area_button.clicked.connect(lambda: self.setArea_clicked(i))
+            detail_button.clicked.connect(lambda: self.detail_clicked(i))
 
             label.setLayout(v_video_layout)
 
@@ -118,6 +121,10 @@ class ContentWidget(QWidget):
 
     def setArea_text(self):
         pass
+
+    def detail_clicked(self, obj): # 点击按钮进入详情页
+        detail_win = DetailDialog()
+        detail_win.exec()
 
     def resizeEvent(self, evt):
         self.windowChange()

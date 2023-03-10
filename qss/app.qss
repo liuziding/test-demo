@@ -1,11 +1,9 @@
 /* 公共样式开始 */
-QPushButton[button="submit"] {
-    background-color: #007FFF;
-    color: #FFF;
-    border: 0;
-    border-radius: 5px;
-    width: 80px;
-    height: 32px;
+QPushButton#nav_bar_btn {
+    background-color: #FFF;
+    border: 1px solid #DEDEDE;
+    padding: 2px 20px;
+    border-radius: 6px;
 }
 /* 公共样式结束 */
 
