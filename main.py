@@ -14,12 +14,11 @@ class Window(QMainWindow):
         # 创建主页和详情页
         self.homePage = HomePage()
         self.detailPage = DetailPage()
-
-        # 把页面添加到stacked窗口里面
-        self.stacked_widget.addWidget(self.detailPage)
-        self.stacked_widget.addWidget(self.homePage)
         
-
+        # 把页面添加到stacked窗口里面
+        self.stacked_widget.addWidget(self.homePage)
+        self.stacked_widget.addWidget(self.detailPage)
+        
         # 从主页跳转详情页
         self.homePage.home_signal.connect(self.switch_page)
         # 从详情页跳转主页
