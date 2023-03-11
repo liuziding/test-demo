@@ -6,6 +6,8 @@ from PySide6.QtGui import *
 
 from utils.commonhelper import CommonHelper
 from components.detail.dialog.parameterSetting import ParameterSetting
+from components.home.line.subLineView import SubLineView
+from components.home.line.subAreaView import SubAreaView
 
 # 顶部按钮组部分
 class TopDetailWidget(QWidget):
@@ -95,10 +97,15 @@ class ContentDetailWidget(QWidget):
         # 创建左、中、右三个部件
         self.left_widget = QListWidget()
         self.middle_widget = QTableWidget()
+        # self.middle_widget.setMaximumWidth(600)
+        self.middle_widget.setFixedWidth(650)
+        self.middle_widget.setMaximumHeight(736)
         self.right_widget = QTableWidget()
-
+        self.right_widget.setFixedWidth(480)
+        self.right_widget.setFixedHeight(736)
+        
         # 设置左部件列表
-        for i in range(5):
+        for i in range(50):
             text = f"{i+1}. video video video video video video video video"
             item = QListWidgetItem(text)
             item.setToolTip(text)
@@ -110,35 +117,139 @@ class ContentDetailWidget(QWidget):
         self.left_widget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 
         # 设置中部件图片
-        self.middle_label = QLabel(self.middle_widget)
-        self.middle_label.setFixedSize(605, 736)
-        self.middle_label.setAlignment(Qt.AlignCenter)
-        self.middle_label.setStyleSheet("background-color: black;")
-        center_pixmap = QPixmap("./images/inside.jpg").scaled(self.middle_label.size(), aspectMode=Qt.KeepAspectRatio)
-        self.middle_label.setPixmap(center_pixmap)
-        self.middle_label.repaint()
+        self.v_middle_layout = QVBoxLayout()
+        self.above_label = QLabel()
+        self.below_label = QLabel()
+        self.h_middle_layout = QHBoxLayout()
+        self.btn_middle_widget = QWidget()
+        
+        self.above_label.setAlignment(Qt.AlignCenter)
+        self.above_label.setMinimumSize(1, 1)
+        above_pixmap = QPixmap("images/inside.jpg").scaled(self.above_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.above_label.setPixmap(above_pixmap)
+
+        self.below_label.setAlignment(Qt.AlignCenter)
+        self.below_label.setMinimumSize(1, 1)
+        # self.below_label.setStyleSheet("background-color: black;")
+        below_pixmap = QPixmap("images/inside.jpg").scaled(self.below_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.below_label.setPixmap(below_pixmap)
+
+        # 显示按钮组
+        stop_detail_button = QPushButton("Stop")
+        set_line_detail_button = QPushButton("Set Lines")
+        set_area_detail_button = QPushButton("Set Area")
+        start_detail_button = QPushButton("Start")
+        export_detail_button = QPushButton("Export")
+
+        # 设置属性
+        stop_detail_button.setObjectName("main_nav_btn")
+        set_line_detail_button.setObjectName("main_nav_btn")
+        set_area_detail_button.setObjectName("main_nav_btn")
+        start_detail_button.setObjectName("main_nav_btn")
+        export_detail_button.setObjectName("main_nav_btn")
+
+        # 设置按钮手状样式
+        stop_detail_button.setCursor(Qt.PointingHandCursor)
+        set_line_detail_button.setCursor(Qt.PointingHandCursor)
+        set_area_detail_button.setCursor(Qt.PointingHandCursor)
+        start_detail_button.setCursor(Qt.PointingHandCursor)
+        export_detail_button.setCursor(Qt.PointingHandCursor)
+
+        self.h_middle_layout.addStretch()
+        self.h_middle_layout.addWidget(stop_detail_button)
+        self.h_middle_layout.addSpacing(-10)
+        self.h_middle_layout.addWidget(set_line_detail_button)
+        self.h_middle_layout.addSpacing(-10)
+        self.h_middle_layout.addWidget(set_area_detail_button)
+        self.h_middle_layout.addSpacing(-10)
+        self.h_middle_layout.addWidget(start_detail_button)
+        self.h_middle_layout.addSpacing(-10)
+        self.h_middle_layout.addWidget(export_detail_button)
+        self.h_middle_layout.addStretch()
+        self.h_middle_layout.setContentsMargins(12, 0, 0, 0)
+        # btn_widget.setFixedHeight(36)
+        self.btn_middle_widget.setLayout(self.h_middle_layout)
+        self.btn_middle_widget.setStyleSheet("margin-bottom: 12px;")
+
+        self.v_middle_layout.addWidget(self.above_label, stretch=1)
+        self.v_middle_layout.addWidget(self.btn_middle_widget)
+        self.v_middle_layout.addWidget(self.below_label, stretch=1)
+
+        self.middle_widget.setLayout(self.v_middle_layout)
+
+        # self.middle_label = QLabel(self.middle_widget)
+        # self.middle_label.setFixedSize(605, 736)
+        # self.middle_label.setAlignment(Qt.AlignCenter)
+        # self.middle_label.setStyleSheet("background-color: black;")
+        # center_pixmap = QPixmap("./images/inside.jpg").scaled(self.middle_label.size(), aspectMode=Qt.KeepAspectRatio)
+        # self.middle_label.setPixmap(center_pixmap)
+        # self.middle_label.repaint()
+
+        # start_identify_button
+        right_layout = QVBoxLayout()
+        identify_image_widget = QWidget()
+        outcome_area_widget = QWidget()
+
+        identify_image_widget.setFixedSize(480, 270)
+        right_layout.setContentsMargins(0, 0, 0 ,0)
+        outcome_area_widget.setFixedSize(480, 300)
+
+
+        self.identify_image_label = QLabel(identify_image_widget)
+        self.identify_image_label.setAlignment(Qt.AlignCenter)  # 标签居中对齐
+        identify_image_pixmap = QPixmap("images/inside.jpg").scaled(QSize(480, 270), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.identify_image_label.setPixmap(identify_image_pixmap)
+
+        outcome_area_label = QVBoxLayout(outcome_area_widget)
+
+        param1 = QLabel("商品车上船计数：")
+        param2 = QLabel("商品车下船计数：")
+        param3 = QLabel("工程车上船计数：")
+        param4 = QLabel("工程车下船计数：")
+
+        param1.setStyleSheet("border-width: 0px;")
+        param2.setStyleSheet("border-width: 0px;")
+        param3.setStyleSheet("border-width: 0px;")
+        param4.setStyleSheet("border-width: 0px;")
+
+        outcome_area_label.addWidget(param1)
+        outcome_area_label.addWidget(param2)
+        outcome_area_label.addWidget(param3)
+        outcome_area_label.addWidget(param4)
+
+
+
+        # self.below_label.setAlignment(Qt.AlignCenter)
+        # self.below_label.setMinimumSize(1, 1)
+        # below_pixmap = QPixmap("images/inside.jpg").scaled(self.below_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        # self.below_label.setPixmap(below_pixmap)
+
 
         # 设置右边图片
-        self.right_label = QLabel(self.right_widget)
-        self.right_label.setFixedSize(605, 736)
-        self.right_label.setAlignment(Qt.AlignCenter)
-        self.right_label.setStyleSheet("background-color: black;")
-        right_pixmap = QPixmap("./images/inside.jpg").scaled(self.right_label.size(), aspectMode=Qt.KeepAspectRatio)
-        self.right_label.setPixmap(right_pixmap)
-        self.right_label.repaint()
+        # self.right_label = QLabel(self.right_widget)
+        # self.right_label.setFixedSize(605, 736)
+        # self.right_label.setAlignment(Qt.AlignCenter)
+        # # self.right_label.setStyleSheet("background-color: black;")
+        # right_pixmap = QPixmap("./images/inside.jpg").scaled(self.right_label.size(), aspectMode=Qt.KeepAspectRatio)
+        # self.right_label.setPixmap(right_pixmap)
+        # self.right_label.repaint()
 
         # 创建左、中、右三个布局，并将对应部件加入到布局中
         left_layout = QVBoxLayout()
         left_layout.addWidget(self.left_widget)
 
-        right_layout = QVBoxLayout()
-        right_layout.addWidget(self.right_widget)
+        # right_layout = QVBoxLayout()
+        # right_layout.addWidget(self.right_widget)
+        self.right_widget.setLayout(right_layout)
+        right_layout.addWidget(identify_image_widget)
+        right_layout.addWidget(outcome_area_widget)
+        right_layout.addStretch()
 
         # 创建主布局，并将左、中、右三个布局加入到主布局中
         main_layout = QHBoxLayout()
         main_layout.addLayout(left_layout)
-        main_layout.addWidget(self.middle_label)
-        main_layout.addWidget(self.right_label)
+        main_layout.addWidget(self.middle_widget)
+        main_layout.addWidget(self.right_widget)
 
         # 将主布局设置为中心部件的布局
         centre_widget.setLayout(main_layout)
@@ -149,6 +260,10 @@ class ContentDetailWidget(QWidget):
         # 将显示菜单栏的函数绑定到 QListWidget 的 customContextMenuRequested 信号
         self.left_widget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.left_widget.customContextMenuRequested.connect(self.show_menu_clicked)
+
+        # 信号与槽
+        set_line_detail_button.clicked.connect(lambda: self.setLine_clicked(i))
+        set_area_detail_button.clicked.connect(lambda: self.setArea_clicked(i))
 
     def handle_item_clicked(self, item):
         # 获取项目所在的列
@@ -180,15 +295,49 @@ class ContentDetailWidget(QWidget):
             menu.addAction(delete_action)
             menu.exec(self.left_widget.mapToGlobal(pos))
 
+    def resizeEvent(self, evt):
+        # 当窗口大小改变时，调用此函数重新计算 QLabel 的大小和位置
+        super().resizeEvent(evt)
+
+        # 获取窗口的大小
+        size1 = self.above_label.size()
+        size3 = self.below_label.size()
+
+        pixmap1 = QPixmap("images/inside.jpg")
+        scaled1 = pixmap1.scaled(size1, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+        # 使用 QPainter 绘制图片，并设置其缩放属性
+        pixmap3 = QPixmap('images/inside.jpg')
+        scaled3 = pixmap3.scaled(size3, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+        # 设置 QLabel 的背景颜色和图片
+        # self.above_label.setStyleSheet("background-color: black;")
+        self.above_label.setPixmap(scaled1)
+        # self.below_label.setStyleSheet("background-color: black;")
+        self.below_label.setPixmap(scaled3)
+
+    def setLine_clicked(self, index): # 点击画线按钮
+        line_win = SubLineView()
+        line_win.line_signal.connect(self.setLine_text)
+        line_win.exec()
+
+    def setArea_clicked(self, index): # 点击画区域按钮
+        area_win = SubAreaView()
+        area_win.area_signal.connect(self.setArea_text)
+        area_win.exec()
+
+    def setLine_text(self, chosen_line):
+        pass
+
+    def setArea_text(self, chosen_area):
+        pass
+
 
 class DetailPage(QMainWindow):
     detail_signal = Signal(str)
     def __init__(self):
         super().__init__()
         self.setWindowTitle("主窗口")
-        self.resize(1300, 800)
-        self.setMinimumWidth(1300)
-        self.setMinimumHeight(800)
         
         # 中心控件
         self.detail_widget = QWidget()
@@ -219,6 +368,9 @@ class DetailPage(QMainWindow):
 
         # 设置中心控件布局
         self.detail_widget.setLayout(detail_layout)
+
+        detail_layout.setStretchFactor(self.top_detail_widget, 0)
+        detail_layout.setStretchFactor(self.content_detail_widget, 1)
 
         # 设置中心控件
         self.setCentralWidget(self.detail_widget)

@@ -16,7 +16,7 @@ class Window(QMainWindow):
 
         # 创建左、中、右三个部件
         self.left_widget = QListWidget()
-        center_widget = QTableWidget()
+        self.center_widget = QTableWidget()
         right_widget = QTableWidget()
 
         # 设置左部件列表
@@ -32,8 +32,18 @@ class Window(QMainWindow):
         self.left_widget.setFixedWidth(200)
         self.left_widget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 
+        self.center_layout = QVBoxLayout(self.center_widget)
+
+        above_widget = QWidget()
+        above_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        self.center_layout.addWidget(above_widget, stretch=2)
+
+
+
+
+
         # 设置中部件图片
-        self.center_label = QLabel(center_widget)
+        self.center_label = QLabel(self.center_widget)
         # self.center_label.setFixedSize(605, 736)
         self.center_label.setAlignment(Qt.AlignCenter)
         self.center_label.setStyleSheet("background-color: black;")

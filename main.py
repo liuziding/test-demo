@@ -28,6 +28,9 @@ class Window(QMainWindow):
         if currentWidget == "homePage":
             # 跳转详情页
             self.setWindowTitle("详情窗口")
+            self.resize(1400, 800)
+            self.setMinimumWidth(1400)
+            self.setMinimumHeight(800)
             self.stacked_widget.setCurrentWidget(self.detailPage)
         else:
             # 跳转主页
