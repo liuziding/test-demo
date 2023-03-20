@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QPushButton
-from PySide6.QtGui import *
-from PySide6.QtCore import QFile, Qt
+from PySide6.QtCore import Qt
 
 from utils.commonhelper import CommonHelper
 

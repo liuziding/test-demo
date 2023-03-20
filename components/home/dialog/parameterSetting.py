@@ -3,7 +3,6 @@ import sys
 from PySide6.QtWidgets import (QDialog, QHBoxLayout, QPushButton, QLabel, QVBoxLayout, QLineEdit,
     QFormLayout, QGroupBox, QMessageBox)
 from PySide6.QtGui import Qt
-from PySide6.QtCore import QFile
 
 from utils.commonhelper import CommonHelper
 
@@ -14,11 +13,6 @@ class ParameterSetting(QDialog):
         self.setWindowTitle("参数配置")
         # 设置样式
         self.setStyleSheet(CommonHelper.read_file("qss/app.qss"))
-
-        # 加载样式表文件
-        # file = QFile("qss/app.qss")
-        # file.open(QFile.ReadOnly | QFile.Text)
-        # stylesheet = file.readAll().data().decode('utf-8')
 
         # 设置主窗口布局
         main_layout = QVBoxLayout(self)

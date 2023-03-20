@@ -1,8 +1,7 @@
-# detailpage.py
-
-from PySide6.QtWidgets import *
-from PySide6.QtCore import *
-from PySide6.QtGui import *
+from PySide6.QtWidgets import (QWidget, QHBoxLayout, QPushButton, QListWidget, QLabel, QVBoxLayout, QTableWidget,
+                               QMainWindow, QListWidgetItem, QMenu)
+from PySide6.QtCore import Signal, QFile, QSize
+from PySide6.QtGui import Qt, QPixmap, QColor, QAction
 
 from utils.commonhelper import CommonHelper
 from components.detail.dialog.parameterSetting import ParameterSetting
@@ -177,15 +176,6 @@ class ContentDetailWidget(QWidget):
 
         self.middle_widget.setLayout(self.v_middle_layout)
 
-        # self.middle_label = QLabel(self.middle_widget)
-        # self.middle_label.setFixedSize(605, 736)
-        # self.middle_label.setAlignment(Qt.AlignCenter)
-        # self.middle_label.setStyleSheet("background-color: black;")
-        # center_pixmap = QPixmap("./images/inside.jpg").scaled(self.middle_label.size(), aspectMode=Qt.KeepAspectRatio)
-        # self.middle_label.setPixmap(center_pixmap)
-        # self.middle_label.repaint()
-
-        # start_identify_button
         right_layout = QVBoxLayout()
         identify_image_widget = QWidget()
         outcome_area_widget = QWidget()
@@ -217,29 +207,10 @@ class ContentDetailWidget(QWidget):
         outcome_area_label.addWidget(param3)
         outcome_area_label.addWidget(param4)
 
-
-
-        # self.below_label.setAlignment(Qt.AlignCenter)
-        # self.below_label.setMinimumSize(1, 1)
-        # below_pixmap = QPixmap("images/inside.jpg").scaled(self.below_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        # self.below_label.setPixmap(below_pixmap)
-
-
-        # 设置右边图片
-        # self.right_label = QLabel(self.right_widget)
-        # self.right_label.setFixedSize(605, 736)
-        # self.right_label.setAlignment(Qt.AlignCenter)
-        # # self.right_label.setStyleSheet("background-color: black;")
-        # right_pixmap = QPixmap("./images/inside.jpg").scaled(self.right_label.size(), aspectMode=Qt.KeepAspectRatio)
-        # self.right_label.setPixmap(right_pixmap)
-        # self.right_label.repaint()
-
         # 创建左、中、右三个布局，并将对应部件加入到布局中
         left_layout = QVBoxLayout()
         left_layout.addWidget(self.left_widget)
 
-        # right_layout = QVBoxLayout()
-        # right_layout.addWidget(self.right_widget)
         self.right_widget.setLayout(right_layout)
         right_layout.addWidget(identify_image_widget)
         right_layout.addWidget(outcome_area_widget)
@@ -345,8 +316,6 @@ class DetailPage(QMainWindow):
         self.top_detail_widget = TopDetailWidget()
         # 窗口下部分内容
         self.content_detail_widget = ContentDetailWidget()
-        # self.detail_widget.setStyleSheet("background: pink;")
-        # self.content_detail_widget.inner_detail_signal.connect(self.switch_detail_page)
 
         self.setup_ui()
 

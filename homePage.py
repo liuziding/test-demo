@@ -1,8 +1,7 @@
-# homepage.py
-
-from PySide6.QtWidgets import *
-from PySide6.QtCore import *
-from PySide6.QtGui import *
+from PySide6.QtWidgets import (QWidget, QHBoxLayout, QPushButton, QGridLayout, QLabel, QVBoxLayout, QSplitter,
+                               QMainWindow)
+from PySide6.QtCore import Signal, QFile
+from PySide6.QtGui import Qt, QPixmap
 
 from utils.commonhelper import CommonHelper
 from components.home.dialog.parameterSetting import ParameterSetting
@@ -141,7 +140,6 @@ class ContentHomeWidget(QWidget):
             
             image_label.setAlignment(Qt.AlignCenter)
             image_label.setPixmap(new_pixmap)
-            # label.setStyleSheet("border: 1px solid red;")
             splitter_H = QSplitter(Qt.Horizontal)
             h_video_layout.addWidget(splitter_H)
             splitter_H.addWidget(image_label)
@@ -187,8 +185,6 @@ class ContentHomeWidget(QWidget):
     def content_signal(self, param):
         self.inner_home_signal.emit("homePage")
 
-    
-
 class HomePage(QMainWindow):
     home_signal = Signal(str)
     def __init__(self):
@@ -229,31 +225,3 @@ class HomePage(QMainWindow):
 
     def switch_detail_page(self):
         self.home_signal.emit("homePage")
-
-
-
-
-
-
-
-
-
-
-        # Create a label to show the homepage content
-        # self.label = QLabel('This is the homepage')
-
-        # # Create a vertical layout and add the label to it
-        # layout = QVBoxLayout()
-        # layout = QVBoxLayout()
-        # btn11 = QPushButton("按钮")
-        # layout.addWidget(btn11)
-        # layout.addWidget(self.label)
-
-        # # Set the layout for the widget
-        # self.setLayout(layout)
-
-        # btn11.clicked.connect(self.switch_detail_page)
-
-    # def switch_detail_page(self):
-    #     self.home_signal.emit("homePage")
-
