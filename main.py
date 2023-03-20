@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QStackedWidget
 from homePage import HomePage
-from detailPage import DetailPage
+from detailPage1 import DetailPage
 
 class Window(QMainWindow):
     def __init__(self):

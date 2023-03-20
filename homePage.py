@@ -1,106 +1,39 @@
 from PySide6.QtWidgets import (QWidget, QHBoxLayout, QPushButton, QGridLayout, QLabel, QVBoxLayout, QSplitter,
-                               QMainWindow)
+                               QMainWindow, QApplication)
 from PySide6.QtCore import Signal, QFile
 from PySide6.QtGui import Qt, QPixmap
 
 from utils.commonhelper import CommonHelper
-from components.home.dialog.parameterSetting import ParameterSetting
+from components.parameterSetting import ParameterSetting
 from components.home.line.subLineView import SubLineView
 from components.home.line.subAreaView import SubAreaView
 
-# 顶部按钮组部分
-class TopHomeWidget(QWidget):
+from ui.ui_home import Ui_home
 
-    def __init__(self):
-        super(TopHomeWidget, self).__init__()
-        self.setFixedHeight(36)
-        self.setupUi()
-
-    def setupUi(self):
-        # 加载样式表文件
-        self.setStyleSheet(CommonHelper.read_file("qss/app.qss"))
-
-        # 创建一个新控件，将水平布局设置为其主布局，并将其背景颜色设置为红色
-        btn_widget = QWidget(self)
-        btn_widget.move(0, 0)
-        layout = QHBoxLayout()
-        layout.setContentsMargins(8, 0, 0, 0)
-
-        # 显示按钮组
-        parameter_setting_button = QPushButton("参数设置")
-        increase_video_button = QPushButton("加频")
-        decrease_video_button = QPushButton("减频")
-        refresh_video_button = QPushButton("刷新")
-
-        # 设置属性
-        parameter_setting_button.setObjectName("main_nav_btn")
-        increase_video_button.setObjectName("main_nav_btn")
-        decrease_video_button.setObjectName("main_nav_btn")
-        refresh_video_button.setObjectName("main_nav_btn")
-
-        # 设置按钮手状样式
-        parameter_setting_button.setCursor(Qt.PointingHandCursor)
-        increase_video_button.setCursor(Qt.PointingHandCursor)
-        decrease_video_button.setCursor(Qt.PointingHandCursor)
-        refresh_video_button.setCursor(Qt.PointingHandCursor)
-
-        layout.addWidget(parameter_setting_button)
-        layout.addSpacing(-10)
-        layout.addWidget(increase_video_button)
-        layout.addSpacing(-10)
-        layout.addWidget(decrease_video_button)
-        layout.addSpacing(-10)
-        layout.addWidget(refresh_video_button)
-        layout.addStretch()
-
-        btn_widget.setLayout(layout)
-        layout.setContentsMargins(12, 0, 0, 0)
-        btn_widget.setFixedHeight(36)
-
-        # 信号与槽
-        parameter_setting_button.clicked.connect(self.parameter_setting_clicked)
-
-    def parameter_setting_clicked(self):
-        parameter_setting_dialog = ParameterSetting()
-        parameter_setting_dialog.exec()
-
-# 下面内容部分
-class ContentHomeWidget(QWidget):
-    inner_home_signal = Signal(str)
-    def __init__(self):
-        super(ContentHomeWidget, self).__init__()
-        self.setContentsMargins(0, 0, 0, 0)
-
-        # 总的控件个数
-        self.widget_list = [{"name": "张三", "age": 18}, {"name": "李四", "age": 19}, {"name": "王五", "age": 20}, {"name": "小六", "age": 21}]
-        
-        # 一行有多少列
-        self.column_count = 2
+class HomePage(QMainWindow):
+    home_signal = Signal(str)
+    def __init__(self, parent = None):
+        super().__init__(parent)
+        self.ui = Ui_home()
+        self.ui.setupUi(self)
 
         self.setup_ui()
 
     def setup_ui(self):
-        self.windowChange()
-
-    def windowChange(self):
         # 加载样式表文件
         file = QFile("qss/app.qss")
         file.open(QFile.ReadOnly | QFile.Text)
         stylesheet = file.readAll().data().decode('utf-8')
 
-        # 创建一个QWidget来显示QGridLayout
-        # self.video_area_widget = QWidget(self)
+        # 一行有多少列
+        self.column_count = 2
 
-        grid_layout = QGridLayout()
-        grid_layout.setContentsMargins(0, 0, 0, 0)
-        grid_layout.setSpacing(0)
         for i in range(0, 4):
             label = QLabel("", self)
             label.setObjectName("main_video_label")
             v_video_layout = QVBoxLayout()
             h_video_layout = QHBoxLayout()
             h_btn_label = QHBoxLayout()
-            # h_btn_label.setSpacing(6)
             stop_button = self.MyPushButton("Stop", "main_video_button")
             set_lines_button = self.MyPushButton("Set_Lines", "main_video_button")
             set_area_button = self.MyPushButton("Set_Area", "main_video_button")
@@ -149,79 +82,36 @@ class ContentHomeWidget(QWidget):
 
             set_lines_button.clicked.connect(lambda: self.setLine_clicked(i))
             set_area_button.clicked.connect(lambda: self.setArea_clicked(i))
-            detail_button.clicked.connect(lambda: self.content_signal(i))
+            # detail_button.clicked.connect(lambda: self.detailClicked(i))
+            detail_button.clicked.connect(lambda index=i: self.detailClicked(index))
 
             label.setLayout(v_video_layout)
 
-            grid_layout.addWidget(label, i // self.column_count, i % self.column_count)
+            self.ui.gl_video_content.addWidget(label, i // self.column_count, i % self.column_count)
 
-        # 将QGridLayout设置为video_area_widget的布局
-        self.setLayout(grid_layout)
+    def paramSettingClicked(self): # 点击“参数设置”按钮  信号与槽函数
+        parameter_setting = ParameterSetting()
+        parameter_setting.exec()
+    
+    def increaseVideoClicked(self): # 点击“加频”按钮  信号与槽函数
+        print("你点击了加频按钮")
+    
+    def decreaseVideoClicked(self): # 点击“减频”按钮  信号与槽函数
+        print("你点击了减频按钮")
+    
+    def flushedClicked(self): # 点击“刷新”按钮  信号与槽函数
+        print("你点击了刷新按钮")
+    
+    def quitClicked(self): # 点击“退出”按钮  信号与槽函数
+        QApplication.quit()
+
+    def detailClicked(self, value): # 点击跳转详情页
+        print(value)
+        self.home_signal.emit("homePage")
+        
+
 
     def MyPushButton(self, text, className):
             btn = QPushButton(text)
             btn.setObjectName(className)
             return btn
-    
-    def setLine_clicked(self, index):
-        line_win = SubLineView()
-        line_win.line_signal.connect(self.setLine_text)
-        line_win.exec()
-
-    def setLine_text(self, chosen_line):
-        pass
-
-    def setArea_clicked(self, index):
-        area_win = SubAreaView()
-        area_win.area_signal.connect(self.setArea_text)
-        area_win.exec()
-
-    def setArea_text(self):
-        pass
-
-    def resizeEvent(self, evt):
-        self.windowChange()
-
-    def content_signal(self, param):
-        self.inner_home_signal.emit("homePage")
-
-class HomePage(QMainWindow):
-    home_signal = Signal(str)
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("主窗口")
-        self.resize(1500, 800)
-        self.setMinimumWidth(1500)
-        self.setMinimumHeight(800)
-
-        # 中心控件
-        self.home_widget = QWidget()
-        # 窗口上部分按钮组
-        self.top_home_widget = TopHomeWidget()
-        # 窗口下部分内容
-        self.content_home_widget = ContentHomeWidget()
-        self.content_home_widget.inner_home_signal.connect(self.switch_detail_page)
-
-        self.setup_ui()
-
-        # 设置样式
-        self.setStyleSheet(CommonHelper.read_file("qss/app.qss"))
-
-    def setup_ui(self):
-        # 中心控件布局 分为上下两部分
-        home_layout = QVBoxLayout()
-        home_layout.setContentsMargins(0, 0, 0, 0)
-        home_layout.setSpacing(0)
-
-        # 绑定信号
-        home_layout.addWidget(self.top_home_widget)
-        home_layout.addWidget(self.content_home_widget)
-
-        # 设置中心控件布局
-        self.home_widget.setLayout(home_layout)
-
-        # 设置中心控件
-        self.setCentralWidget(self.home_widget)
-
-    def switch_detail_page(self):
-        self.home_signal.emit("homePage")
