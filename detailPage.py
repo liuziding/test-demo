@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import (QWidget, QHBoxLayout, QPushButton, QGridLayout, QLabel, QVBoxLayout, QSplitter,
                                QMainWindow, QApplication, QListWidgetItem)
-from PySide6.QtCore import Signal, QFile, QSize
+from PySide6.QtCore import Signal, QFile, QSize, QTimer
 from PySide6.QtGui import Qt, QPixmap, QFont
 
 from utils.commonhelper import CommonHelper
 from components.parameterSetting import ParameterSetting
-from components.home.line.subLineView import SubLineView
-from components.home.line.subAreaView import SubAreaView
+from components.subLineView import SubLineView
+from components.subAreaView import SubAreaView
 
 from ui.ui_detail import Ui_detail
 
@@ -33,7 +33,8 @@ class DetailPage(QMainWindow):
         # 展示识别图片区域
         self.identify_image()
 
-       
+        # 展示码头识别结果区域
+        self.identify_result()     
 
     def paramSettingClicked(self): # 点击“参数设置”按钮  信号与槽函数
         parameter_setting = ParameterSetting()
@@ -59,16 +60,20 @@ class DetailPage(QMainWindow):
         self.update()
     
     def returnClicked(self): # 点击“返回”按钮  信号与槽函数
-        self.detail_signal.emit("detailPage")
+        self.detail_signal.emit("homePage")
     
     def stopClicked(self): # 点击“Stop”按钮  信号与槽函数
         print("你点击了Stop按钮")
     
     def setLinesClicked(self): # 点击“Set Lines”按钮  信号与槽函数
-        print("你点击了Set Lines按钮")
+        line_win = SubLineView()
+        # line_win.line_signal.connect(self.setLine_text)
+        line_win.exec()
 
     def setAreaClicked(self): # 点击“Set Area”按钮  信号与槽函数
-        print("你点击了Set Area按钮")
+        area_win = SubAreaView()
+        # area_win.area_signal.connect(self.setArea_text)
+        area_win.exec()
     
     def startClicked(self): # 点击“Start”按钮  信号与槽函数
         print("你点击了Start按钮")
@@ -81,13 +86,47 @@ class DetailPage(QMainWindow):
         pixmap = QPixmap("images/inside.jpg")
         pixmap_w = pixmap.width()
         pixmap_h = pixmap.height()
-        label_w = self.ui.l_identify_image.width() - 10
-        label_h = self.ui.l_identify_image.height() - 10
+        label_w = self.ui.l_identify_image.width()
+        label_h = self.ui.l_identify_image.height()
         ratio_w = pixmap_w / label_w
         ratio_h = pixmap_h / label_h
         if ratio_w > ratio_h:
             new_pixmap = pixmap.scaled((pixmap_w / ratio_w), (pixmap_h / ratio_w))
         else:
             new_pixmap = pixmap.scaled((pixmap_w / ratio_h), (pixmap_h / ratio_h))
-        self.ui.l_identify_image.setPixmap(new_pixmap)    
+        self.ui.l_identify_image.setPixmap(new_pixmap)
+
+    def identify_result(self): # 展示码头识别结果区域
+        self.ui.l_wharf_name.setText("洋山港")
+        self.ui.l_goods_car_above_count.setText("18")
+        self.ui.l_goods_car_under_count.setText("28")
+        self.ui.l_project_car_above_count.setText("38")
+        self.ui.l_project_car_under_count.setText("48")
+
+    def resizeEvent(self, evt):
+        if self.ui.l_actual_video:
+            timer = QTimer(self)
+            timer.setSingleShot(True)  # 设置为单次触发
+            timer.timeout.connect(self.showImage)
+            timer.start(100)  # 0.1秒后触发
+
+        super().resizeEvent(evt)
+
+    def showImage(self): # 展示图片
+        self.ui.l_actual_video.setAlignment(Qt.AlignCenter)
+        self.ui.l_original_video.setAlignment(Qt.AlignCenter)
+        pixmap = QPixmap("images/inside.jpg")
+        pixmap_w = pixmap.width()
+        pixmap_h = pixmap.height()
+        label_w = self.ui.l_actual_video.width() - 10
+        label_h = self.ui.l_actual_video.height() - 10
+        ratio_w = pixmap_w / label_w
+        ratio_h = pixmap_h / label_h
+        if ratio_w > ratio_h:
+            new_pixmap = pixmap.scaled((pixmap_w / ratio_w), (pixmap_h / ratio_w))
+        else:
+            new_pixmap = pixmap.scaled((pixmap_w / ratio_h), (pixmap_h / ratio_h))
+            
+        self.ui.l_actual_video.setPixmap(new_pixmap)
+        self.ui.l_original_video.setPixmap(new_pixmap)
         

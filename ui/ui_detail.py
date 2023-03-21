@@ -104,13 +104,13 @@ class Ui_detail(object):
         self.horizontalLayout_9.addWidget(self.lw_video_list)
 
         self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(-1, -1, 0, -1)
         self.l_actual_video = QLabel(self.w_detail_window)
         self.l_actual_video.setObjectName(u"l_actual_video")
         self.l_actual_video.setStyleSheet(u"QWidget#l_actual_video {\n"
 "	border: 1px solid #BEBEBE;\n"
-"	background: #000;\n"
 "}")
 
         self.verticalLayout.addWidget(self.l_actual_video)
@@ -176,7 +176,6 @@ class Ui_detail(object):
         self.l_original_video = QLabel(self.w_detail_window)
         self.l_original_video.setObjectName(u"l_original_video")
         self.l_original_video.setStyleSheet(u"QWidget#l_original_video {\n"
-"	background: #000;\n"
 "	border: 1px solid #BEBEBE;\n"
 "}")
 
@@ -186,13 +185,13 @@ class Ui_detail(object):
         self.horizontalLayout_9.addLayout(self.verticalLayout)
 
         self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.l_identify_image = QLabel(self.w_detail_window)
         self.l_identify_image.setObjectName(u"l_identify_image")
         self.l_identify_image.setMinimumSize(QSize(400, 225))
-        self.l_identify_image.setMaximumSize(QSize(400, 250))
+        self.l_identify_image.setMaximumSize(QSize(400, 225))
         self.l_identify_image.setStyleSheet(u"QWidget#l_identify_image {\n"
-"	background: #000;\n"
 "	border: 1px solid #BEBEBE;\n"
 "}")
 
@@ -206,6 +205,7 @@ class Ui_detail(object):
         self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
         self.horizontalLayoutWidget_2.setGeometry(QRect(-1, 30, 401, 41))
         self.horizontalLayout_4 = QHBoxLayout(self.horizontalLayoutWidget_2)
+        self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -243,11 +243,11 @@ class Ui_detail(object):
 
         self.horizontalLayout_5.addWidget(self.label_2)
 
-        self.label_3 = QLabel(self.layoutWidget)
-        self.label_3.setObjectName(u"label_3")
-        self.label_3.setMinimumSize(QSize(140, 0))
+        self.l_goods_car_above_count = QLabel(self.layoutWidget)
+        self.l_goods_car_above_count.setObjectName(u"l_goods_car_above_count")
+        self.l_goods_car_above_count.setMinimumSize(QSize(140, 0))
 
-        self.horizontalLayout_5.addWidget(self.label_3)
+        self.horizontalLayout_5.addWidget(self.l_goods_car_above_count)
 
         self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -267,11 +267,11 @@ class Ui_detail(object):
 
         self.horizontalLayout_8.addWidget(self.label_8)
 
-        self.label_9 = QLabel(self.layoutWidget)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setMinimumSize(QSize(140, 0))
+        self.l_goods_car_under_count = QLabel(self.layoutWidget)
+        self.l_goods_car_under_count.setObjectName(u"l_goods_car_under_count")
+        self.l_goods_car_under_count.setMinimumSize(QSize(140, 0))
 
-        self.horizontalLayout_8.addWidget(self.label_9)
+        self.horizontalLayout_8.addWidget(self.l_goods_car_under_count)
 
         self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -291,11 +291,11 @@ class Ui_detail(object):
 
         self.horizontalLayout_7.addWidget(self.label_6)
 
-        self.label_7 = QLabel(self.layoutWidget)
-        self.label_7.setObjectName(u"label_7")
-        self.label_7.setMinimumSize(QSize(140, 0))
+        self.l_project_car_above_count = QLabel(self.layoutWidget)
+        self.l_project_car_above_count.setObjectName(u"l_project_car_above_count")
+        self.l_project_car_above_count.setMinimumSize(QSize(140, 0))
 
-        self.horizontalLayout_7.addWidget(self.label_7)
+        self.horizontalLayout_7.addWidget(self.l_project_car_above_count)
 
         self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -315,11 +315,11 @@ class Ui_detail(object):
 
         self.horizontalLayout_6.addWidget(self.label_4)
 
-        self.label_5 = QLabel(self.layoutWidget)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setMinimumSize(QSize(140, 0))
+        self.l_project_car_under_count = QLabel(self.layoutWidget)
+        self.l_project_car_under_count.setObjectName(u"l_project_car_under_count")
+        self.l_project_car_under_count.setMinimumSize(QSize(140, 0))
 
-        self.horizontalLayout_6.addWidget(self.label_5)
+        self.horizontalLayout_6.addWidget(self.l_project_car_under_count)
 
         self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -380,15 +380,15 @@ class Ui_detail(object):
         self.pushButton_9.setText(QCoreApplication.translate("detail", u"Export", None))
         self.l_original_video.setText("")
         self.l_identify_image.setText("")
-        self.l_wharf_name.setText(QCoreApplication.translate("detail", u"XX", None))
+        self.l_wharf_name.setText("")
         self.label.setText(QCoreApplication.translate("detail", u"\u7801\u5934\u8bc6\u522b\u7ed3\u679c\u5b9e\u65f6\u5c55\u793a\u533a", None))
         self.label_2.setText(QCoreApplication.translate("detail", u"\u5546\u54c1\u8f66\u4e0a\u8239\u8ba1\u6570\uff1a", None))
-        self.label_3.setText("")
+        self.l_goods_car_above_count.setText("")
         self.label_8.setText(QCoreApplication.translate("detail", u"\u5546\u54c1\u8f66\u4e0a\u8239\u8ba1\u6570\uff1a", None))
-        self.label_9.setText("")
+        self.l_goods_car_under_count.setText("")
         self.label_6.setText(QCoreApplication.translate("detail", u"\u5546\u54c1\u8f66\u4e0a\u8239\u8ba1\u6570\uff1a", None))
-        self.label_7.setText("")
+        self.l_project_car_above_count.setText("")
         self.label_4.setText(QCoreApplication.translate("detail", u"\u5546\u54c1\u8f66\u4e0a\u8239\u8ba1\u6570\uff1a", None))
-        self.label_5.setText("")
+        self.l_project_car_under_count.setText("")
     # retranslateUi
 

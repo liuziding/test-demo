@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import (QWidget, QHBoxLayout, QPushButton, QGridLayout, QLabel, QVBoxLayout, QSplitter,
                                QMainWindow, QApplication)
-from PySide6.QtCore import Signal, QFile
+from PySide6.QtCore import Signal, QFile, QTimer
 from PySide6.QtGui import Qt, QPixmap
 
 from utils.commonhelper import CommonHelper
 from components.parameterSetting import ParameterSetting
-from components.home.line.subLineView import SubLineView
-from components.home.line.subAreaView import SubAreaView
+from components.subLineView import SubLineView
+from components.subAreaView import SubAreaView
 
 from ui.ui_home import Ui_home
 
@@ -57,12 +57,12 @@ class HomePage(QMainWindow):
             h_btn_label.addWidget(detail_button)
             h_btn_label.addStretch()
 
-            image_label = QLabel()
-            pixmap = QPixmap("./images/inside.jpg")
+            self.image_label = QLabel()
+            pixmap = QPixmap("images/inside.jpg")
             pixmap_w = pixmap.width()
             pixmap_h = pixmap.height()
-            image_w = image_label.width()
-            image_h = image_label.height()
+            image_w = self.image_label.width()
+            image_h = self.image_label.height()
             ratio_w = pixmap_w / image_w
             ratio_h = pixmap_h / image_h
             new_pixmap = None
@@ -71,23 +71,25 @@ class HomePage(QMainWindow):
             else:
                 new_pixmap = pixmap.scaled((pixmap.width() / ratio_h - 20), (pixmap.height() / ratio_h - 20))
             
-            image_label.setAlignment(Qt.AlignCenter)
-            image_label.setPixmap(new_pixmap)
+            self.image_label.setAlignment(Qt.AlignCenter)
+            self.image_label.setPixmap(new_pixmap)
             splitter_H = QSplitter(Qt.Horizontal)
             h_video_layout.addWidget(splitter_H)
-            splitter_H.addWidget(image_label)
+            splitter_H.addWidget(self.image_label)
 
             v_video_layout.addLayout(h_video_layout)
             v_video_layout.addLayout(h_btn_label)
 
-            set_lines_button.clicked.connect(lambda: self.setLine_clicked(i))
-            set_area_button.clicked.connect(lambda: self.setArea_clicked(i))
+            set_lines_button.clicked.connect(lambda: self.setLinesClicked(i))
+            set_area_button.clicked.connect(lambda: self.setAreaClicked(i))
             # detail_button.clicked.connect(lambda: self.detailClicked(i))
             detail_button.clicked.connect(lambda index=i: self.detailClicked(index))
 
             label.setLayout(v_video_layout)
 
             self.ui.gl_video_content.addWidget(label, i // self.column_count, i % self.column_count)
+
+        self.show()
 
     def paramSettingClicked(self): # 点击“参数设置”按钮  信号与槽函数
         parameter_setting = ParameterSetting()
@@ -106,8 +108,42 @@ class HomePage(QMainWindow):
         QApplication.quit()
 
     def detailClicked(self, value): # 点击跳转详情页
-        print(value)
-        self.home_signal.emit("homePage")
+        self.home_signal.emit("detailPage")
+
+    def setLinesClicked(self, index): # 点击“Set Lines”按钮  信号与槽函数
+        line_win = SubLineView()
+        # line_win.line_signal.connect(self.setLine_text)
+        line_win.exec()
+
+    def setAreaClicked(self, index): # 点击“Set Area”按钮  信号与槽函数
+        area_win = SubAreaView()
+        # area_win.area_signal.connect(self.setArea_text)
+        area_win.exec()
+
+    def resizeEvent(self, evt):
+        if self.image_label:
+            timer = QTimer(self)
+            timer.setSingleShot(True)  # 设置为单次触发
+            timer.timeout.connect(self.showImage)
+            timer.start(100)  # 0.1秒后触发
+
+        super().resizeEvent(evt)
+
+    def showImage(self): # 展示图片
+        self.image_label.setAlignment(Qt.AlignCenter)
+        pixmap = QPixmap("images/inside.jpg")
+        pixmap_w = pixmap.width()
+        pixmap_h = pixmap.height()
+        label_w = self.image_label.width() - 10
+        label_h = self.image_label.height() - 10
+        ratio_w = pixmap_w / label_w
+        ratio_h = pixmap_h / label_h
+        if ratio_w > ratio_h:
+            new_pixmap = pixmap.scaled((pixmap_w / ratio_w), (pixmap_h / ratio_w))
+        else:
+            new_pixmap = pixmap.scaled((pixmap_w / ratio_h), (pixmap_h / ratio_h))
+            
+        self.image_label.setPixmap(new_pixmap)
         
 
 

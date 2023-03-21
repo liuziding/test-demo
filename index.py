@@ -12,6 +12,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("主窗口")
         self.resize(1200, 800) # 设置窗口大小
+        self.setMinimumHeight(800)
+        self.setMinimumWidth(1200)
         self.center() # 第一次打开窗口在电脑屏幕正中间
         self.setup_ui()
 
@@ -20,15 +22,15 @@ class MainWindow(QMainWindow):
         self.stacked_widget = QStackedWidget()
         self.setCentralWidget(self.stacked_widget)
 
-        self.switch_page("detailPage")
+        self.switch_page("homePage")
 
-    def switch_page(self, currentWidget): # 切换窗口
+    def switch_page(self, value): # 切换窗口
         # 循环删除所有子窗口
         while self.stacked_widget.count() > 0:
             widget = self.stacked_widget.widget(0)
             self.stacked_widget.removeWidget(widget)
             widget.deleteLater()
-        if currentWidget == "homePage":
+        if value == "detailPage":
             # 跳转详情页
             self.setWindowTitle("详情窗口")
             self.detailPage = DetailPage()
@@ -36,7 +38,6 @@ class MainWindow(QMainWindow):
             self.stacked_widget.addWidget(self.detailPage)
             # 从详情页跳转主页
             self.detailPage.detail_signal.connect(self.switch_page)
-            # self.stacked_widget.setCurrentWidget(self.detailPage)
         else:
             # 跳转主页
             self.setWindowTitle("主窗口")
